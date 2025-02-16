@@ -9,7 +9,14 @@ import Foundation
 import UIKit
 import SnapKit
 
+protocol AlbumViewProtocol: AnyObject {
+    func displayAlbumDetails(viewModel: AlbumModels.ViewModel)
+}
+
 final class AlbumViewController: UIViewController {
+    var interactor: AlbumInteractorProtocol
+    var router: (NSObjectProtocol & AlbumRouterProtocol & AlbumDataPassing)
+
     var album: Album?
 
     private let albumImageView: UIImageView = {
@@ -41,6 +48,20 @@ final class AlbumViewController: UIViewController {
         label.textColor = .systemOrange
         return label
     }()
+
+    init(interactor: AlbumInteractorProtocol,
+         router: (NSObjectProtocol & AlbumRouterProtocol & AlbumDataPassing),
+         album: Album
+    ) {
+        self.interactor = interactor
+        self.router = router
+        self.album = album
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,19 +101,34 @@ final class AlbumViewController: UIViewController {
     }
 
     private func setupAlbum() {
-        guard let album else {
-            return
-        }
+//        guard let album else {
+//            return
+//        }
+//
+//        let urlString = album.artworkUrl100
+//        NetworkManager.shared.loadImage(from: urlString) { [weak self] loadedImage in
+//            DispatchQueue.main.async {
+//                self?.albumImageView.image = loadedImage
+//            }
+//        }
+//
+//        albumNameLabel.text = album.collectionName
+//        artistNameLabel.text = album.artistName
+//        collectionPriceLabel.text = "\(album.collectionPrice) $"
+    }
 
-        let urlString = album.artworkUrl100
-        NetworkManager.shared.loadImage(from: urlString) { [weak self] loadedImage in
-            DispatchQueue.main.async {
-                self?.albumImageView.image = loadedImage
-            }
-        }
+//    func fetchAlbum() {
+//        let request = AlbumModels.Request()
+//        interactor.fetchAlbumDetails(request: request)
+//    }
 
-        albumNameLabel.text = album.collectionName
-        artistNameLabel.text = album.artistName
-        collectionPriceLabel.text = "\(album.collectionPrice) $"
+}
+
+// MARK: - AlbumViewProtocol
+extension AlbumViewController: AlbumViewProtocol {
+    func displayAlbumDetails(viewModel: AlbumModels.ViewModel) {
+        albumNameLabel.text = viewModel.album.collectionName
+        artistNameLabel.text = viewModel.album.artistName
+        collectionPriceLabel.text = "\(viewModel.album.collectionPrice) $"
     }
 }

@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol SearchHistoryViewProtocol: AnyObject {
+    func displaySearchHistory(viewModel: SearchHistoryModels.ViewModel)
+}
+
 final class SearchHistoryViewController: UIViewController {
+    var interactor: SearchHistoryInteractorProtocol?
+    var router: (SearchHistoryRouterProtocol & SearchHistoryDataPassing)?
+
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.separatorStyle = .singleLine
@@ -44,12 +51,20 @@ final class SearchHistoryViewController: UIViewController {
         }
     }
 
-    func updateSearchHistory() {
-        searchHistory = StorageManager.shared.getSearchHistory()
-        self.tableView.reloadData()
+    private func updateSearchHistory() {
+        let request = SearchHistoryModels.Request()
+        interactor?.fetchSearchHistory(request: request)
+    }
+}
+// MARK: - SearchHistoryViewProtocol
+extension SearchHistoryViewController: SearchHistoryViewProtocol {
+    func displaySearchHistory(viewModel: SearchHistoryModels.ViewModel) {
+        searchHistory = viewModel.history
+        tableView.reloadData()
     }
 }
 
+// MARK: - UITableViewDataSource
 extension SearchHistoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchHistory.count
@@ -62,17 +77,11 @@ extension SearchHistoryViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension SearchHistoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedTerm = searchHistory[indexPath.row]
-        performSearch(for: selectedTerm)
-    }
-
-    func performSearch(for term: String) {
-        let searchViewController = SearchViewController()
-        searchViewController.searchBar.isHidden = true
-        searchViewController.searchAlbums(with: term)
-        navigationController?.pushViewController(searchViewController, animated: true)
+        router?.routeToSearch(with: selectedTerm)
     }
 }
