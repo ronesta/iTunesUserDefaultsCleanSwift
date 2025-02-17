@@ -15,7 +15,7 @@ protocol AlbumViewProtocol: AnyObject {
 
 final class AlbumViewController: UIViewController {
     var interactor: AlbumInteractorProtocol
-    var router: (NSObjectProtocol & AlbumRouterProtocol & AlbumDataPassing)
+    var networkManager: NetworkManagerProtocol
 
     var album: Album
 
@@ -50,11 +50,11 @@ final class AlbumViewController: UIViewController {
     }()
 
     init(interactor: AlbumInteractorProtocol,
-         router: (NSObjectProtocol & AlbumRouterProtocol & AlbumDataPassing),
+         networkManager: NetworkManagerProtocol,
          album: Album
     ) {
         self.interactor = interactor
-        self.router = router
+        self.networkManager = networkManager
         self.album = album
         super.init(nibName: nil, bundle: nil)
     }
@@ -101,20 +101,20 @@ final class AlbumViewController: UIViewController {
     }
 
     private func setupAlbum() {
-//        guard let album else {
-//            return
-//        }
-//
-//        let urlString = album.artworkUrl100
-//        NetworkManager.shared.loadImage(from: urlString) { [weak self] loadedImage in
-//            DispatchQueue.main.async {
-//                self?.albumImageView.image = loadedImage
-//            }
-//        }
-//
-//        albumNameLabel.text = album.collectionName
-//        artistNameLabel.text = album.artistName
-//        collectionPriceLabel.text = "\(album.collectionPrice) $"
+        //        guard let album else {
+        //            return
+        //        }
+        //
+        //        let urlString = album.artworkUrl100
+        //        NetworkManager.shared.loadImage(from: urlString) { [weak self] loadedImage in
+        //            DispatchQueue.main.async {
+        //                self?.albumImageView.image = loadedImage
+        //            }
+        //        }
+        //
+        //        albumNameLabel.text = album.collectionName
+        //        artistNameLabel.text = album.artistName
+        //        collectionPriceLabel.text = "\(album.collectionPrice) $"
     }
 
     func fetchAlbum() {
@@ -130,5 +130,12 @@ extension AlbumViewController: AlbumViewProtocol {
         albumNameLabel.text = viewModel.album.collectionName
         artistNameLabel.text = viewModel.album.artistName
         collectionPriceLabel.text = "\(viewModel.album.collectionPrice) $"
+
+        let urlString = album.artworkUrl100
+        networkManager.loadImage(from: urlString) { [weak self] loadedImage in
+            DispatchQueue.main.async {
+                self?.albumImageView.image = loadedImage
+            }
+        }
     }
 }

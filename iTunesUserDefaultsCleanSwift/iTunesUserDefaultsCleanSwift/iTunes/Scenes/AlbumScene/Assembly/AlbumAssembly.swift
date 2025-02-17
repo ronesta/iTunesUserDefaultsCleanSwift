@@ -20,13 +20,11 @@ final class AlbumAssembly {
                                          worker: worker
         )
 
-        let router = AlbumRouter()
         let viewController = AlbumViewController(interactor: interactor,
-                                                 router: router,
+                                                 networkManager: networkManager,
                                                  album: album
         )
 
-        router.viewController = viewController
         presenter.viewController = viewController
 
         return viewController
