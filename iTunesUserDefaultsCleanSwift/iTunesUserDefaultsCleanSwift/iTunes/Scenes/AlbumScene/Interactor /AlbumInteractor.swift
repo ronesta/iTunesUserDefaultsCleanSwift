@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 protocol AlbumInteractorProtocol {
-    func fetchAlbumDetails(request: AlbumModels.Request)
+    func loadAlbumDetails(request: AlbumModels.Request)
 }
 
 class AlbumInteractor: AlbumInteractorProtocol {
@@ -20,9 +21,9 @@ class AlbumInteractor: AlbumInteractorProtocol {
         self.worker = worker
     }
 
-    func fetchAlbumDetails(request: AlbumModels.Request) {
-        worker.fetchAlbum(albumID: request.albumID) { album in
-            let response = AlbumModels.Response(album: album)
+    func loadAlbumDetails(request: AlbumModels.Request) {
+        worker.loadAlbumDetails(with: request) { image in
+            let response = AlbumModels.Response(album: request.album, image: image ?? UIImage())
             self.presenter.presentAlbumDetails(response: response)
         }
     }

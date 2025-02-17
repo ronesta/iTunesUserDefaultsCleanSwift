@@ -14,7 +14,7 @@ protocol SearchViewProtocol: AnyObject {
 
 final class SearchViewController: UIViewController {
     var interactor: SearchInteractorProtocol?
-    var router: (NSObjectProtocol & SearchRouterProtocol & SearchDataPassing)?
+    var router: (NSObjectProtocol & SearchRouterProtocol)?
     var storageManager: StorageManagerProtocol?
     var networkManager: NetworkManagerProtocol?
 
@@ -113,7 +113,7 @@ extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         let album = albums[indexPath.item]
-        router?.routeToAlbumDetail(albumID: album.artistId)
+        router?.routeToAlbumDetail(with: album)
     }
 }
 

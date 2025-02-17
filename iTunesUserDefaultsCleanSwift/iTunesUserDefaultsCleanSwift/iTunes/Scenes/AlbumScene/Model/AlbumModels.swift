@@ -6,14 +6,16 @@
 //
 
 import Foundation
+import UIKit
 
 enum AlbumModels {
     struct Request {
-        var albumID: String
+        var album: Album
     }
 
     struct Response {
         var album: Album
+        var image: UIImage
     }
     
     struct ViewModel {

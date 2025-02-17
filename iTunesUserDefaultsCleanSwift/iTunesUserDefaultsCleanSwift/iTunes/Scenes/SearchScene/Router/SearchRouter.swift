@@ -8,25 +8,14 @@
 import Foundation
 import UIKit
 
-protocol SearchDataStore {
-    var albums: [Album] { get set }
-}
-
 protocol SearchRouterProtocol {
-    func routeToAlbumDetail(albumID: Int)
+    func routeToAlbumDetail(with album: Album)
 }
 
-protocol SearchDataPassing {
-    var dataStore: SearchDataStore? { get }
-}
-
-class SearchRouter: NSObject, SearchRouterProtocol, SearchDataPassing {
+class SearchRouter: NSObject, SearchRouterProtocol {
     weak var viewController: SearchViewController?
-    var dataStore: SearchDataStore?
 
-    func routeToAlbumDetail(albumID: Int) {
-        guard let album = dataStore?.albums[albumID] else { return }
-
+    func routeToAlbumDetail(with album: Album) {
         let albumViewController = AlbumAssembly.build(with: album)
         viewController?.navigationController?.pushViewController(albumViewController, animated: true)
     }

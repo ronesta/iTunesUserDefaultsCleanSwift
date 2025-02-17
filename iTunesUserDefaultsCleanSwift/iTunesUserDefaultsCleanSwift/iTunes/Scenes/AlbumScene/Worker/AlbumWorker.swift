@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 protocol AlbumWorkerProtocol {
-    func fetchAlbum(albumID: String, completion: @escaping (Album) -> Void)
+    func loadAlbumDetails(with album: AlbumModels.Request, completion: @escaping (UIImage?) -> Void)
 }
 
 class AlbumWorker: AlbumWorkerProtocol {
@@ -18,17 +19,7 @@ class AlbumWorker: AlbumWorkerProtocol {
         self.networkManager = networkManager
     }
 
-    func fetchAlbum(albumID: String, completion: @escaping (Album) -> Void) {
-        // Используем NetworkManager для загрузки альбома по ID
-        networkManager.loadAlbums(albumName: albumID) { (result) in
-            switch result {
-            case .success(let albums):
-                if let album = albums.first {
-                    completion(album)
-                }
-            case .failure(let error):
-                print(error)
-            }
-        }
+    func loadAlbumDetails(with album: AlbumModels.Request, completion: @escaping (UIImage?) -> Void) {
+        networkManager.loadImage(from: album.album.artworkUrl100, completion: completion)
     }
 }

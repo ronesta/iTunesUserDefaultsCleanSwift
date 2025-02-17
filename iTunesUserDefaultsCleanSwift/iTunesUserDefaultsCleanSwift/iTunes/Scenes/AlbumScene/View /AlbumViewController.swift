@@ -17,7 +17,7 @@ final class AlbumViewController: UIViewController {
     var interactor: AlbumInteractorProtocol
     var router: (NSObjectProtocol & AlbumRouterProtocol & AlbumDataPassing)
 
-    var album: Album?
+    var album: Album
 
     private let albumImageView: UIImageView = {
         let image = UIImageView()
@@ -66,7 +66,7 @@ final class AlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        setupAlbum()
+        fetchAlbum()
     }
 
     private func setupViews() {
@@ -117,10 +117,10 @@ final class AlbumViewController: UIViewController {
 //        collectionPriceLabel.text = "\(album.collectionPrice) $"
     }
 
-//    func fetchAlbum() {
-//        let request = AlbumModels.Request()
-//        interactor.fetchAlbumDetails(request: request)
-//    }
+    func fetchAlbum() {
+        let request = AlbumModels.Request(album: album)
+        interactor.loadAlbumDetails(request: request)
+    }
 
 }
 
