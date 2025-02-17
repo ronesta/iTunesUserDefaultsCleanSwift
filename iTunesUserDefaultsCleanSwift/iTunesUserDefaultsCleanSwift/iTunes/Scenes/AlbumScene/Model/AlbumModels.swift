@@ -17,8 +17,9 @@ enum AlbumModels {
         var album: Album
         var image: UIImage
     }
-    
+
     struct ViewModel {
         var album: Album
+        var image: UIImage
     }
 }

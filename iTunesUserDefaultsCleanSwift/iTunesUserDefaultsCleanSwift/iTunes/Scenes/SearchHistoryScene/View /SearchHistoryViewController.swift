@@ -5,15 +5,12 @@
 //  Created by Ибрагим Габибли on 11.02.2025.
 //
 
+import Foundation
 import UIKit
-
-protocol SearchHistoryViewProtocol: AnyObject {
-    func displaySearchHistory(viewModel: SearchHistoryModels.ViewModel)
-}
 
 final class SearchHistoryViewController: UIViewController {
     var interactor: SearchHistoryInteractorProtocol?
-    var router: (SearchHistoryRouterProtocol & SearchHistoryDataPassing)?
+    var router: SearchHistoryRouterProtocol?
 
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)

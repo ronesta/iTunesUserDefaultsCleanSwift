@@ -8,11 +8,7 @@
 import Foundation
 import UIKit
 
-protocol AlbumWorkerProtocol {
-    func loadAlbumDetails(with album: AlbumModels.Request, completion: @escaping (UIImage?) -> Void)
-}
-
-class AlbumWorker: AlbumWorkerProtocol {
+final class AlbumWorker: AlbumWorkerProtocol {
     var networkManager: NetworkManagerProtocol
 
     init(networkManager: NetworkManagerProtocol) {

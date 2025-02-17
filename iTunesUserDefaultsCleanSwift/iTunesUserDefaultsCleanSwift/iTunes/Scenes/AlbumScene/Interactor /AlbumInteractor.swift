@@ -8,11 +8,7 @@
 import Foundation
 import UIKit
 
-protocol AlbumInteractorProtocol {
-    func loadAlbumDetails(request: AlbumModels.Request)
-}
-
-class AlbumInteractor: AlbumInteractorProtocol {
+final class AlbumInteractor: AlbumInteractorProtocol {
     var presenter: AlbumPresenterProtocol
     var worker: AlbumWorkerProtocol
 

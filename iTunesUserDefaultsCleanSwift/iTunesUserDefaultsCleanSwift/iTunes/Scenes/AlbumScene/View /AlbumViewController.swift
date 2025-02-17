@@ -9,14 +9,8 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol AlbumViewProtocol: AnyObject {
-    func displayAlbumDetails(viewModel: AlbumModels.ViewModel)
-}
-
 final class AlbumViewController: UIViewController {
     var interactor: AlbumInteractorProtocol
-    var networkManager: NetworkManagerProtocol
-
     var album: Album
 
     private let albumImageView: UIImageView = {
@@ -50,11 +44,9 @@ final class AlbumViewController: UIViewController {
     }()
 
     init(interactor: AlbumInteractorProtocol,
-         networkManager: NetworkManagerProtocol,
          album: Album
     ) {
         self.interactor = interactor
-        self.networkManager = networkManager
         self.album = album
         super.init(nibName: nil, bundle: nil)
     }
@@ -100,23 +92,6 @@ final class AlbumViewController: UIViewController {
         }
     }
 
-    private func setupAlbum() {
-        //        guard let album else {
-        //            return
-        //        }
-        //
-        //        let urlString = album.artworkUrl100
-        //        NetworkManager.shared.loadImage(from: urlString) { [weak self] loadedImage in
-        //            DispatchQueue.main.async {
-        //                self?.albumImageView.image = loadedImage
-        //            }
-        //        }
-        //
-        //        albumNameLabel.text = album.collectionName
-        //        artistNameLabel.text = album.artistName
-        //        collectionPriceLabel.text = "\(album.collectionPrice) $"
-    }
-
     func fetchAlbum() {
         let request = AlbumModels.Request(album: album)
         interactor.loadAlbumDetails(request: request)
@@ -130,12 +105,6 @@ extension AlbumViewController: AlbumViewProtocol {
         albumNameLabel.text = viewModel.album.collectionName
         artistNameLabel.text = viewModel.album.artistName
         collectionPriceLabel.text = "\(viewModel.album.collectionPrice) $"
-
-        let urlString = album.artworkUrl100
-        networkManager.loadImage(from: urlString) { [weak self] loadedImage in
-            DispatchQueue.main.async {
-                self?.albumImageView.image = loadedImage
-            }
-        }
+        albumImageView.image = viewModel.image
     }
 }

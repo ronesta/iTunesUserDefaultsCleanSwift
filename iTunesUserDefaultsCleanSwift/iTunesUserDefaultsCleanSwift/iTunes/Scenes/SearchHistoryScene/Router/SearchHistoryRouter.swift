@@ -5,22 +5,11 @@
 //  Created by Ибрагим Габибли on 16.02.2025.
 //
 
+import Foundation
 import UIKit
 
-protocol SearchHistoryDataStore {
-}
-
-protocol SearchHistoryRouterProtocol {
-    func routeToSearch(with term: String)
-}
-
-protocol SearchHistoryDataPassing {
-    var dataStore: SearchHistoryDataStore? { get }
-}
-
-class SearchHistoryRouter: NSObject, SearchHistoryRouterProtocol, SearchHistoryDataPassing {
+final class SearchHistoryRouter: NSObject, SearchHistoryRouterProtocol {
     weak var viewController: SearchHistoryViewController?
-    var dataStore: SearchHistoryDataStore?
 
     func routeToSearch(with term: String) {
         guard let searchViewController = SearchAssembly.build() as? UINavigationController,

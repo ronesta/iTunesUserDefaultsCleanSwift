@@ -7,15 +7,11 @@
 
 import Foundation
 
-protocol AlbumPresenterProtocol {
-    func presentAlbumDetails(response: AlbumModels.Response)
-}
-
-class AlbumPresenter: AlbumPresenterProtocol {
+final class AlbumPresenter: AlbumPresenterProtocol {
     weak var viewController: AlbumViewProtocol?
 
     func presentAlbumDetails(response: AlbumModels.Response) {
-        let viewModel = AlbumModels.ViewModel(album: response.album)
+        let viewModel = AlbumModels.ViewModel(album: response.album, image: response.image)
 
         viewController?.displayAlbumDetails(viewModel: viewModel)
     }

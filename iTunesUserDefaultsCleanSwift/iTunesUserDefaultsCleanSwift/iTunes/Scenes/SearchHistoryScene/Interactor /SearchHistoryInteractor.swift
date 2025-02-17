@@ -7,11 +7,7 @@
 
 import Foundation
 
-protocol SearchHistoryInteractorProtocol {
-    func fetchSearchHistory(request: SearchHistoryModels.Request)
-}
-
-final class SearchHistoryInteractor: SearchHistoryInteractorProtocol, SearchHistoryDataStore {
+final class SearchHistoryInteractor: SearchHistoryInteractorProtocol {
     var presenter: SearchHistoryPresenterProtocol
     var worker: SearchHistoryWorkerProtocol
 

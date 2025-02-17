@@ -5,7 +5,6 @@
 //  Created by Ибрагим Габибли on 16.02.2025.
 //
 
-
 import Foundation
 import UIKit
 
@@ -19,9 +18,7 @@ final class AlbumAssembly {
         let interactor = AlbumInteractor(presenter: presenter,
                                          worker: worker
         )
-
         let viewController = AlbumViewController(interactor: interactor,
-                                                 networkManager: networkManager,
                                                  album: album
         )
 

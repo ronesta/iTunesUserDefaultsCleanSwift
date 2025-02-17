@@ -6,10 +6,7 @@
 //
 
 import Foundation
-
-protocol SearchInteractorProtocol {
-    func searchAlbums(request: Search.Request)
-}
+import UIKit
 
 final class SearchInteractor: SearchInteractorProtocol {
     var presenter: SearchPresenterProtocol
@@ -28,9 +25,14 @@ final class SearchInteractor: SearchInteractorProtocol {
             case .success(let albums):
                 let response = Search.Response(albums: albums)
                 self?.presenter.presentAlbums(response: response)
-            case .failure(_):
+            case .failure(let error):
+                self?.presenter.presentError(error.localizedDescription)
                 print("Error fetching albums: (error.localizedDescription)")
             }
         }
+    }
+
+    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void) {
+        worker.loadImage(for: album, completion: completion)
     }
 }

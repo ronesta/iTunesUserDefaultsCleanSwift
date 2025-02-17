@@ -8,15 +8,10 @@
 import UIKit
 import SnapKit
 
-protocol SearchViewProtocol: AnyObject {
-    func displayAlbums(viewModel: Search.ViewModel)
-}
-
 final class SearchViewController: UIViewController {
     var interactor: SearchInteractorProtocol?
     var router: (NSObjectProtocol & SearchRouterProtocol)?
     var storageManager: StorageManagerProtocol?
-    var networkManager: NetworkManagerProtocol?
 
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -76,6 +71,13 @@ extension SearchViewController: SearchViewProtocol {
         albums = viewModel.albums
         collectionView.reloadData()
     }
+
+    func displayError(_ message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -94,9 +96,8 @@ extension SearchViewController: UICollectionViewDataSource {
         }
 
         let album = albums[indexPath.item]
-        let urlString = album.artworkUrl100
 
-        networkManager?.loadImage(from: urlString) { loadedImage in
+        interactor?.loadImage(for: album) { loadedImage in
             DispatchQueue.main.async {
                 guard let cell = collectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell  else {
                     return

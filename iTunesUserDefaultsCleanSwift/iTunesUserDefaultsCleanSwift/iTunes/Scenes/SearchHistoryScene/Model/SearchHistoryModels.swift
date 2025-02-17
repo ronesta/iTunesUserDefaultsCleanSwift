@@ -14,7 +14,7 @@ enum SearchHistoryModels {
     struct Response {
         let history: [String]
     }
-    
+
     struct ViewModel {
         let history: [String]
     }

@@ -6,13 +6,8 @@
 //
 
 import Foundation
-import UIKit
 
-protocol SearchRouterProtocol {
-    func routeToAlbumDetail(with album: Album)
-}
-
-class SearchRouter: NSObject, SearchRouterProtocol {
+final class SearchRouter: NSObject, SearchRouterProtocol {
     weak var viewController: SearchViewController?
 
     func routeToAlbumDetail(with album: Album) {

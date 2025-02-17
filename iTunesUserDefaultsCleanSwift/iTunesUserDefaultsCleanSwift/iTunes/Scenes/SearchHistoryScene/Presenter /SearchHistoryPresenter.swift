@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol SearchHistoryPresenterProtocol {
-    func presentSearchHistory(response: SearchHistoryModels.Response)
-}
-
 final class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
     weak var viewController: SearchHistoryViewProtocol?
 

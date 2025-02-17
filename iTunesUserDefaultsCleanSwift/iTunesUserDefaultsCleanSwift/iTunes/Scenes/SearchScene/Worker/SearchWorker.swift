@@ -6,10 +6,7 @@
 //
 
 import Foundation
-
-protocol SearchWorkerProtocol {
-    func searchAlbums(with term: String, completion: @escaping (Result<[Album], Error>) -> Void)
-}
+import UIKit
 
 final class SearchWorker: SearchWorkerProtocol {
     var networkManager: NetworkManagerProtocol
@@ -39,5 +36,9 @@ final class SearchWorker: SearchWorkerProtocol {
                 completion(.failure(error))
             }
         }
+    }
+
+    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void) {
+        networkManager.loadImage(from: album.artworkUrl100, completion: completion)
     }
 }

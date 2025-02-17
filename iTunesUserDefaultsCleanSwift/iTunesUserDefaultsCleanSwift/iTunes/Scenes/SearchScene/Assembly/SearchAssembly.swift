@@ -27,7 +27,6 @@ final class SearchAssembly {
         viewController.interactor = interactor
         viewController.router = router
         viewController.storageManager = storageManager
-        viewController.networkManager = networkManager
 
         router.viewController = viewController
         presenter.viewController = viewController

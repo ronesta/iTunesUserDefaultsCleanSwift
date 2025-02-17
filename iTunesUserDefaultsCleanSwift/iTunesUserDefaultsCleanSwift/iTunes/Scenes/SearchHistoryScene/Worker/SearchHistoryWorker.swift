@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol SearchHistoryWorkerProtocol {
-    func loadSearchHistory() -> [String]
-}
-
 final class SearchHistoryWorker: SearchHistoryWorkerProtocol {
     var storageManager: StorageManagerProtocol
 
