@@ -9,17 +9,34 @@ import Foundation
 import UIKit
 
 final class AlbumInteractor: AlbumInteractorProtocol {
-    var presenter: AlbumPresenterProtocol
-    var worker: AlbumWorkerProtocol
+    private let presenter: AlbumPresenterProtocol
+    private let imageLoader: ImageLoaderProtocol
+    private let album: Album
 
-    init(presenter: AlbumPresenterProtocol, worker: AlbumWorkerProtocol) {
+    init(presenter: AlbumPresenterProtocol,
+         imageLoader: ImageLoaderProtocol,
+         album: Album
+    ) {
         self.presenter = presenter
-        self.worker = worker
+        self.imageLoader = imageLoader
+        self.album = album
     }
 
-    func loadAlbumDetails(request: AlbumModels.Request) {
-        worker.loadAlbumDetails(with: request) { image in
-            let response = AlbumModels.Response(album: request.album, image: image ?? UIImage())
+    func viewDidLoad() {
+        let request = AlbumModels.Request(album: album)
+        loadAlbumDetails(request: request)
+    }
+
+    private func loadAlbumDetails(request: AlbumModels.Request) {
+        imageLoader.loadImage(from: request.album.artworkUrl100) { [weak self] loadedImage in
+
+            guard let self,
+                  let loadedImage else {
+                return
+            }
+
+            let response = AlbumModels.Response(album: request.album, image: loadedImage)
+
             self.presenter.presentAlbumDetails(response: response)
         }
     }

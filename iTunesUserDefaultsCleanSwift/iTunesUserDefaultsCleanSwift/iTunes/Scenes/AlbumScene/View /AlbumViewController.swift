@@ -10,9 +10,6 @@ import UIKit
 import SnapKit
 
 final class AlbumViewController: UIViewController {
-    var interactor: AlbumInteractorProtocol
-    var album: Album
-
     private let albumImageView: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 15
@@ -43,11 +40,10 @@ final class AlbumViewController: UIViewController {
         return label
     }()
 
-    init(interactor: AlbumInteractorProtocol,
-         album: Album
-    ) {
+    private let interactor: AlbumInteractorProtocol
+
+    init(interactor: AlbumInteractorProtocol) {
         self.interactor = interactor
-        self.album = album
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -58,7 +54,7 @@ final class AlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        fetchAlbum()
+        interactor.viewDidLoad()
     }
 
     private func setupViews() {
@@ -91,12 +87,6 @@ final class AlbumViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
     }
-
-    func fetchAlbum() {
-        let request = AlbumModels.Request(album: album)
-        interactor.loadAlbumDetails(request: request)
-    }
-
 }
 
 // MARK: - AlbumViewProtocol

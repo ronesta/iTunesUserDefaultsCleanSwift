@@ -12,15 +12,14 @@ final class SearchHistoryRouter: NSObject, SearchHistoryRouterProtocol {
     weak var viewController: SearchHistoryViewController?
 
     func routeToSearch(with term: String) {
-        guard let searchViewController = SearchAssembly.build() as? UINavigationController,
+        let searchAssembly = SearchAssembly()
+
+        guard let searchViewController = searchAssembly.build() as? UINavigationController,
               let rootViewController = searchViewController.viewControllers.first as? SearchViewController else {
             return
         }
 
-        let request = Search.Request(searchTerm: term)
-
-        rootViewController.searchBar.isHidden = true
-        rootViewController.interactor?.searchAlbums(request: request)
+        rootViewController.performSearch(with: term)
 
         viewController?.navigationController?.pushViewController(rootViewController, animated: true)
     }

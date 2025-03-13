@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SearchHistoryViewProtocol: AnyObject {
-    func displaySearchHistory(viewModel: SearchHistoryModels.ViewModel)
+    func updateSearchHistory(viewModel: SearchHistoryModels.ViewModel)
 }

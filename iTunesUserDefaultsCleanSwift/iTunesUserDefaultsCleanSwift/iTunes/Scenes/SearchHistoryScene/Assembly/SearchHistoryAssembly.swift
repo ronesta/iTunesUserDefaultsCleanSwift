@@ -9,23 +9,29 @@ import Foundation
 import UIKit
 
 final class SearchHistoryAssembly {
-    static func build() -> UIViewController {
+    func build() -> UIViewController {
         let storageManager = StorageManager()
-        let viewController = SearchHistoryViewController()
 
         let presenter = SearchHistoryPresenter()
-        let worker = SearchHistoryWorker(storageManager: storageManager)
         let interactor = SearchHistoryInteractor(presenter: presenter,
-                                                 worker: worker
+                                                 storageManager: storageManager
         )
+        let tableViewDataSource = SearchHistoryTableViewDataSource()
+
         let router = SearchHistoryRouter()
 
-        viewController.interactor = interactor
-        viewController.router = router
+        let viewController = SearchHistoryViewController(
+            interactor: interactor,
+            tableViewDataSource: tableViewDataSource
+        )
+
         router.viewController = viewController
         presenter.viewController = viewController
 
         let navigationController = UINavigationController(rootViewController: viewController)
+
+        configureOnSelect(for: viewController, with: tableViewDataSource, router: router)
+
         let tabBarItem = UITabBarItem(title: "History",
                                       image: UIImage(systemName: "clock"),
                                       tag: 1)
@@ -33,5 +39,15 @@ final class SearchHistoryAssembly {
         navigationController.tabBarItem = tabBarItem
 
         return navigationController
+    }
+
+    private func configureOnSelect(for viewController: SearchHistoryViewController,
+                                   with tableViewDataSource: SearchHistoryTableViewDataSource,
+                                   router: SearchHistoryRouterProtocol
+    ) {
+        viewController.onSelect = { indexPath in
+            let selectedTerm = tableViewDataSource.searchHistory[indexPath.row]
+            router.routeToSearch(with: selectedTerm)
+        }
     }
 }

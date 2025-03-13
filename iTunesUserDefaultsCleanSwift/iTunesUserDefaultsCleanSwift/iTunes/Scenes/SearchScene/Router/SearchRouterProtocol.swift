@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SearchRouterProtocol {
-    func routeToAlbumDetail(with album: Album)
+    func routeToAlbumDetails(with album: Album)
 }

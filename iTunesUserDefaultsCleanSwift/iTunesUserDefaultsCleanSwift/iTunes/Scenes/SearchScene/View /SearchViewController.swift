@@ -9,11 +9,7 @@ import UIKit
 import SnapKit
 
 final class SearchViewController: UIViewController {
-    var interactor: SearchInteractorProtocol?
-    var router: (NSObjectProtocol & SearchRouterProtocol)?
-    var storageManager: StorageManagerProtocol?
-
-    let searchBar: UISearchBar = {
+    private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "Search Albums"
@@ -40,7 +36,22 @@ final class SearchViewController: UIViewController {
         return collectionView
     }()
 
-    var albums = [Album]()
+    private let interactor: SearchInteractorProtocol
+    private let collectionViewDataSource: SearchDataSourceProtocol
+
+    var onSelect: ((IndexPath) -> Void)?
+
+    init(interactor: SearchInteractorProtocol,
+         collectionViewDataSource: SearchDataSourceProtocol
+    ) {
+        self.interactor = interactor
+        self.collectionViewDataSource = collectionViewDataSource
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +65,7 @@ final class SearchViewController: UIViewController {
         navigationItem.titleView = searchBar
 
         searchBar.delegate = self
-        collectionView.dataSource = self
+        collectionView.dataSource = collectionViewDataSource
         collectionView.delegate = self
 
         collectionView.snp.makeConstraints { make in
@@ -68,7 +79,7 @@ final class SearchViewController: UIViewController {
 // MARK: - SearchViewProtocol
 extension SearchViewController: SearchViewProtocol {
     func displayAlbums(viewModel: Search.ViewModel) {
-        albums = viewModel.albums
+        collectionViewDataSource.albums = viewModel.albums
         collectionView.reloadData()
     }
 
@@ -78,43 +89,19 @@ extension SearchViewController: SearchViewProtocol {
         alert.addAction(okAction)
         present(alert, animated: true)
     }
-}
 
-// MARK: - UICollectionViewDataSource
-extension SearchViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        albums.count
-    }
+    func performSearch(with term: String) {
+        searchBar.isHidden = true
+        let request = Search.Request(searchTerm: term)
 
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: AlbumCollectionViewCell.id,
-            for: indexPath)
-                as? AlbumCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-
-        let album = albums[indexPath.item]
-
-        interactor?.loadImage(for: album) { loadedImage in
-            DispatchQueue.main.async {
-                guard let cell = collectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell  else {
-                    return
-                }
-                cell.configure(with: album, image: loadedImage)
-            }
-        }
-        return cell
+        interactor.searchFromHistory(with: request)
     }
 }
 
 // MARK: - UICollectionViewDelegate
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        let album = albums[indexPath.item]
-        router?.routeToAlbumDetail(with: album)
+        onSelect?(indexPath)
     }
 }
 
@@ -122,13 +109,18 @@ extension SearchViewController: UICollectionViewDelegate {
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        guard let searchTerm = searchBar.text, !searchTerm.isEmpty else {
+        guard let searchTerm = searchBar.text else {
             return
         }
 
         let request = Search.Request(searchTerm: searchTerm)
-        interactor?.searchAlbums(request: request)
 
-        storageManager?.saveSearchTerm(searchTerm)
+        interactor.searchButtonClicked(with: request)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let request = Search.Request(searchTerm: searchText)
+
+        interactor.didTypeSearch(request)
     }
 }

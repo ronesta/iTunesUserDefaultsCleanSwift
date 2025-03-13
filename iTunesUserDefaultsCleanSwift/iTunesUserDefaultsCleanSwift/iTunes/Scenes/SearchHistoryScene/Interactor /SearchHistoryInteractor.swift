@@ -8,18 +8,22 @@
 import Foundation
 
 final class SearchHistoryInteractor: SearchHistoryInteractorProtocol {
-    var presenter: SearchHistoryPresenterProtocol
-    var worker: SearchHistoryWorkerProtocol
+    private let presenter: SearchHistoryPresenterProtocol
+    private let storageManager: StorageManagerProtocol
 
     init(presenter: SearchHistoryPresenterProtocol,
-         worker: SearchHistoryWorkerProtocol
+         storageManager: StorageManagerProtocol
     ) {
         self.presenter = presenter
-        self.worker = worker
+        self.storageManager = storageManager
     }
 
-    func fetchSearchHistory(request: SearchHistoryModels.Request) {
-        let history = worker.loadSearchHistory()
+    func viewDidLoad() {
+        loadSearchHistory()
+    }
+
+    private func loadSearchHistory() {
+        let history = storageManager.getSearchHistory()
 
         let response = SearchHistoryModels.Response(history: history)
         presenter.presentSearchHistory(response: response)

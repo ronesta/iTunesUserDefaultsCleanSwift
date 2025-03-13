@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import UIKit
 
 protocol SearchInteractorProtocol {
-    func searchAlbums(request: Search.Request)
-    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void)
+    func didTypeSearch(_ searchQuery: Search.Request)
+    func searchButtonClicked(with request: Search.Request?)
+    func searchFromHistory(with request: Search.Request)
 }

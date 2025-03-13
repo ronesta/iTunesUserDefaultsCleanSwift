@@ -9,18 +9,18 @@ import Foundation
 import UIKit
 
 final class AlbumAssembly {
-    static func build(with album: Album) -> UIViewController {
+    func build(with album: Album) -> UIViewController {
         let storageManager = StorageManager()
-        let networkManager = NetworkManager(storageManager: storageManager)
+        let imageLoader = ImageLoader(storageManager: storageManager)
 
         let presenter = AlbumPresenter()
-        let worker = AlbumWorker(networkManager: networkManager)
+
         let interactor = AlbumInteractor(presenter: presenter,
-                                         worker: worker
+                                         imageLoader: imageLoader,
+                                         album: album
         )
-        let viewController = AlbumViewController(interactor: interactor,
-                                                 album: album
-        )
+
+        let viewController = AlbumViewController(interactor: interactor)
 
         presenter.viewController = viewController
 

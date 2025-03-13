@@ -8,5 +8,5 @@
 import Foundation
 
 protocol AlbumInteractorProtocol {
-    func loadAlbumDetails(request: AlbumModels.Request)
+    func viewDidLoad()
 }

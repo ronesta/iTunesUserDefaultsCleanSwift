@@ -9,29 +9,33 @@ import Foundation
 import UIKit
 
 final class SearchAssembly {
-    static func build() -> UIViewController {
+    func build() -> UIViewController {
         let storageManager = StorageManager()
-        let networkManager = NetworkManager(storageManager: storageManager)
-
-        let viewController = SearchViewController()
+        let iTunesService = ITunesService()
+        let imageLoader = ImageLoader(storageManager: storageManager)
 
         let presenter = SearchPresenter()
-        let worker = SearchWorker(networkManager: networkManager,
-                                  storageManager: storageManager
-        )
         let interactor = SearchInteractor(presenter: presenter,
-                                          worker: worker
+                                          iTunesService: iTunesService,
+                                          storageManager: storageManager
         )
+
         let router = SearchRouter()
 
-        viewController.interactor = interactor
-        viewController.router = router
-        viewController.storageManager = storageManager
+        let collectionViewDataSource = SearchCollectionViewDataSource(imageLoader: imageLoader)
+
+        let viewController = SearchViewController(
+            interactor: interactor,
+            collectionViewDataSource: collectionViewDataSource
+        )
 
         router.viewController = viewController
         presenter.viewController = viewController
 
         let navigationController = UINavigationController(rootViewController: viewController)
+
+        configureOnSelect(for: viewController, with: collectionViewDataSource, router: router)
+
         let tabBarItem = UITabBarItem(title: "Search",
                                       image: UIImage(systemName: "magnifyingglass"),
                                       tag: 0)
@@ -39,5 +43,16 @@ final class SearchAssembly {
         navigationController.tabBarItem = tabBarItem
 
         return navigationController
+    }
+
+    private func configureOnSelect(for viewController: SearchViewController,
+                                   with collectionViewDataSource: SearchCollectionViewDataSource,
+                                   router: SearchRouterProtocol
+    ) {
+        viewController.onSelect = { indexPath in
+            let album = collectionViewDataSource.albums[indexPath.item]
+
+            router.routeToAlbumDetails(with: album)
+        }
     }
 }

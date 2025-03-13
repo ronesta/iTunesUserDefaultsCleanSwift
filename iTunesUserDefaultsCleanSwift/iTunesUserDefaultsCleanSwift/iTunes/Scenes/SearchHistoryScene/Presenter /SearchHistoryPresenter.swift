@@ -12,6 +12,6 @@ final class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
 
     func presentSearchHistory(response: SearchHistoryModels.Response) {
         let viewModel = SearchHistoryModels.ViewModel(history: response.history)
-        viewController?.displaySearchHistory(viewModel: viewModel)
+        viewController?.updateSearchHistory(viewModel: viewModel)
     }
 }

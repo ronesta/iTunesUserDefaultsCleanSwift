@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SearchHistoryInteractorProtocol {
-    func fetchSearchHistory(request: SearchHistoryModels.Request)
+    func viewDidLoad()
 }
