@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		E1C5DD512D5BA5760093EDD2 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E1C5DD502D5BA5760093EDD2 /* SnapKit */; };
+		E1DBDE102DB57FD10040965A /* ViewControllerPresentationSpy in Frameworks */ = {isa = PBXBuildFile; productRef = E1DBDE0F2DB57FD10040965A /* ViewControllerPresentationSpy */; };
+		E1DBDE132DB57FE40040965A /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = E1DBDE122DB57FE40040965A /* InlineSnapshotTesting */; };
+		E1DBDE152DB57FE40040965A /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = E1DBDE142DB57FE40040965A /* SnapshotTesting */; };
+		E1DBDE172DB57FE40040965A /* SnapshotTestingCustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = E1DBDE162DB57FE40040965A /* SnapshotTestingCustomDump */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +81,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1DBDE172DB57FE40040965A /* SnapshotTestingCustomDump in Frameworks */,
+				E1DBDE152DB57FE40040965A /* SnapshotTesting in Frameworks */,
+				E1DBDE132DB57FE40040965A /* InlineSnapshotTesting in Frameworks */,
+				E1DBDE102DB57FD10040965A /* ViewControllerPresentationSpy in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +163,10 @@
 			);
 			name = iTunesTests;
 			packageProductDependencies = (
+				E1DBDE0F2DB57FD10040965A /* ViewControllerPresentationSpy */,
+				E1DBDE122DB57FE40040965A /* InlineSnapshotTesting */,
+				E1DBDE142DB57FE40040965A /* SnapshotTesting */,
+				E1DBDE162DB57FE40040965A /* SnapshotTestingCustomDump */,
 			);
 			productName = iTunesTests;
 			productReference = E1E744D52DB555D500877087 /* iTunesTests.xctest */;
@@ -218,6 +230,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E1C5DD4F2D5BA5760093EDD2 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E1DBDE0E2DB57FD10040965A /* XCRemoteSwiftPackageReference "ViewControllerPresentationSpy" */,
+				E1DBDE112DB57FE40040965A /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E1C5DD382D5BA5280093EDD2 /* Products */;
@@ -624,6 +638,22 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		E1DBDE0E2DB57FD10040965A /* XCRemoteSwiftPackageReference "ViewControllerPresentationSpy" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jonreid/ViewControllerPresentationSpy";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		E1DBDE112DB57FE40040965A /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.18.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -631,6 +661,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E1C5DD4F2D5BA5760093EDD2 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		E1DBDE0F2DB57FD10040965A /* ViewControllerPresentationSpy */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1DBDE0E2DB57FD10040965A /* XCRemoteSwiftPackageReference "ViewControllerPresentationSpy" */;
+			productName = ViewControllerPresentationSpy;
+		};
+		E1DBDE122DB57FE40040965A /* InlineSnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1DBDE112DB57FE40040965A /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = InlineSnapshotTesting;
+		};
+		E1DBDE142DB57FE40040965A /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1DBDE112DB57FE40040965A /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+		E1DBDE162DB57FE40040965A /* SnapshotTestingCustomDump */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1DBDE112DB57FE40040965A /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTestingCustomDump;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
