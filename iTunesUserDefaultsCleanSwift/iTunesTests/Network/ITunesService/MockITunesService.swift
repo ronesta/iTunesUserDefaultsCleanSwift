@@ -14,7 +14,7 @@ final class MockITunesService: ITunesServiceProtocol {
     
     func loadAlbums(albumName: String, completion: @escaping (Result<[Album], Error>) -> Void) {
         self.albumName = albumName
-        if let result = result {
+        if let result {
             completion(result)
         }
     }

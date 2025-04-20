@@ -9,8 +9,8 @@ import Foundation
 @testable import iTunesUserDefaultsCleanSwift
 
 final class MockITunesServiceForInteractor: ITunesServiceProtocol {
-    private(set) var shouldReturnError = false
     private(set) var albumName: String?
+    var shouldReturnError = false
     var albums = [Album]()
 
     func loadAlbums(albumName: String, completion: @escaping (Result<[Album], Error>) -> Void) {

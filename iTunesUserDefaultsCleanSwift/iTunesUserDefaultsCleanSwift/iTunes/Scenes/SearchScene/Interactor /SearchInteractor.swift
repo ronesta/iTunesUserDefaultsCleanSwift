@@ -46,7 +46,7 @@ final class SearchInteractor: SearchInteractorProtocol {
         searchAlbums(with: request)
     }
 
-    func searchAlbums(with request: Search.Request) {
+    private func searchAlbums(with request: Search.Request) {
         if let savedAlbums = storageManager.loadAlbums(for: request.searchTerm) {
             let response = Search.Response(albums: savedAlbums)
             self.presenter.presentAlbums(response: response)
