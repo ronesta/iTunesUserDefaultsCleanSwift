@@ -61,6 +61,7 @@ final class SearchHistoryViewController: UIViewController {
         }
     }
 }
+
 // MARK: - SearchHistoryViewProtocol
 extension SearchHistoryViewController: SearchHistoryViewProtocol {
     func updateSearchHistory(viewModel: SearchHistoryModels.ViewModel) {
