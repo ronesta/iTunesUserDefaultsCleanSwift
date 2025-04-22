@@ -9,8 +9,8 @@ import XCTest
 @testable import iTunesUserDefaultsCleanSwift
 
 final class SearchHistoryPresenterTests: XCTestCase {
-    var presenter: SearchHistoryPresenter!
-    var mockView: MockSearchHistoryView!
+    private var presenter: SearchHistoryPresenter!
+    private var mockView: MockSearchHistoryView!
 
     override func setUp() {
         super.setUp()
