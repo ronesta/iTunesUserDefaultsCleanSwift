@@ -8,7 +8,7 @@
 import Foundation
 @testable import iTunesUserDefaultsCleanSwift
 
-class MockSearchPresenter: SearchPresenterProtocol {
+final class MockSearchPresenter: SearchPresenterProtocol {
     private(set) var presentedAlbums: Search.Response?
     private(set) var presentedError: String?
 
